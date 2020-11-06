@@ -1,0 +1,41 @@
+#include<string.h>
+#include<stdio.h>
+
+#define SIZE 100000
+
+void changing(FILE *f1, FILE *f2)
+{
+    int c = 0;
+    char ch = 0;
+    char arr[SIZE] = {"\0"};
+    long lenght = 0;
+    fseek(f1, 0, SEEK_END);
+    lenght = ftell(f1);
+    fseek(f1, 0, SEEK_SET);
+    while (!feof(f1))
+    {
+        arr[lenght-c-1] = fgetc(f1);
+        c++;
+    }
+    const char *str = &arr[0];
+    fputs(str, f2);
+}
+
+int main() {
+    FILE *fr = fopen("input.txt", "rt");
+    if (!fr)
+    {
+        printf("Error reading file!\n");
+        return -2;
+    }
+    FILE *fw = fopen("output.txt", "wt");
+    if (!fw)
+    {
+        printf("Error writing file!");
+        return -3;
+    }
+    changing(fr, fw);
+    fclose(fr);
+    fclose(fw);
+    return 0;
+}
